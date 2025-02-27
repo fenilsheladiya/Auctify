@@ -1,0 +1,2 @@
+# Auctify
+Auction Platform - MERN
