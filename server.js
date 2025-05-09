@@ -59,13 +59,12 @@
 // //   })
 // // );
 
-// app.use(cors({ 
+// app.use(cors({
 //   origin: "http://localhost:5173", // Explicitly allow frontend URL
 //   credentials: true, // Allow cookies and authentication headers
 //   methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific methods
 //   allowedHeaders: ["Content-Type", "Authorization"] // Allow necessary headers
 // }));
-
 
 // endedAuctionCron();
 // verifyCommissionCron();
@@ -82,7 +81,6 @@
 // app.listen(PORT, () => {
 //   console.log(`Server running on port ${PORT}`);
 // });
-
 
 import express from "express";
 import cors from "cors";
@@ -102,7 +100,6 @@ import { verifyCommissionCron } from "./automation/verifyCommission.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
-
 import cloudinary from "cloudinary";
 
 // Configure dotenv
@@ -110,18 +107,18 @@ dotenv.config({ path: "./config/config.env" });
 
 const app = express();
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // ✅ Apply CORS Middleware **BEFORE** Defining Routes
-app.use(cors({
-  origin: "http://localhost:5173", // Allow only frontend URL
-  credentials: true, // Allow cookies and authorization headers
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"], // Allow required headers
-}));
-
+app.use(
+  cors({
+    origin: "https://auctify.onrender.com", // Allow only frontend URL
+    credentials: true, // Allow cookies and authorization headers
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow required headers
+  })
+);
 
 // Load environment variables
 dotenv.config({ path: "./config/config.env" });
@@ -139,7 +136,6 @@ cloudinary.v2.config({
 //   api_key: process.env.CLOUDINARY_API_KEY,
 //   api_secret: process.env.CLOUDINARY_API_SECRET ? "Loaded" : "Missing",
 // });
-
 
 // Middlewares
 app.use(morgan("dev"));
@@ -163,12 +159,11 @@ connectDb();
 app.use(errorMiddleware);
 
 //static file reading
-app.use(express.static(path.join(__dirname, '/frontend/dist' )))
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
-app.get('*', function(req,res){
-  res.sendFile(path.join(__dirname, '/frontend/dist/index.html'));
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "/frontend/dist/index.html"));
 });
-
 
 // Start server
 const PORT = process.env.PORT || 8080;
